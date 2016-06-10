@@ -1,0 +1,4 @@
+Flask
+flask-socketio
+libusb1
+gevent-websocket
