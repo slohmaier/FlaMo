@@ -75,23 +75,41 @@ class FlashForge(object):
 			else:
 				raise FlashForgeError('Could not get control: {0}'.format(res))
 	
+	@staticmethod
+	def match_info(identifier, info_raw):
+		pattern = '.*' + identifier + ': ([\S ]*)'
+		return re.match(pattern, info_raw, re.DOTALL).group(1)
+	
 	def machine_information(self):
 		info_raw = self._gcodecmd('M115') + '\n'
 		
-		def match_info(identifier, info_raw):
-			pattern = '.*' + identifier + ': ([\S ]*)'
-			return re.match(pattern, info_raw, re.DOTALL).group(1)
 		cordmatch = re.match(r'.*X:.*(\d+).*Y:.*(\d+).*Z:.*(\d+)', info_raw, re.DOTALL)
 		
 		return {
-			'type': match_info('Machine Type', info_raw),
-			'name': match_info('Machine Name', info_raw),
-			'firmware': match_info('Firmware', info_raw),
-			'sn': match_info('SN', info_raw),
-			'x': float(cordmatch.group(1)),
-			'y': float(cordmatch.group(2)),
-			'z': float(cordmatch.group(3)),
-			'tools': match_info('Tool Count', info_raw)
+			'type': self.match_info('Machine Type', info_raw),
+			'name': self.match_info('Machine Name', info_raw),
+			'firmware': self.match_info('Firmware', info_raw),
+			'sn': self.match_info('SN', info_raw),
+			'position' : {
+				'x': float(cordmatch.group(1)),
+				'y': float(cordmatch.group(2)),
+				'z': float(cordmatch.group(3))
+			},
+			'tools': self.match_info('Tool Count', info_raw)
+		}
+	
+	def machine_status(self):
+		info_raw = self._gcodecmd('M119')
+		
+		endstopmatch = re.match(r'.*Endstop: (\S+): (\d) (\S+): (\d) (\S+): (\d)', info_raw, re.DOTALL)
+		endstopdict = {}
+		for i in range(0, int(len(endstopmatch.groups())/2)):
+			endstopdict[endstopmatch.groups()[i*2]] = endstopmatch.groups()[i*2+1]
+		
+		return {
+			'status': self.match_info('MachineStatus', info_raw),
+			'movemode': self.match_info('MoveMode', info_raw),
+			'endstops': endstopdict
 		}
 	
 	def temperatures(self):
@@ -112,4 +130,4 @@ if __name__ == '__main__':
 	ff.connect()
 	print(ff.machine_information())
 	print(ff.temperatures())
-	print(ff.set_leds(0,0,0))
+	print(ff.machine_status())
