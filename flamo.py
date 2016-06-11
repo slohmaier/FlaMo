@@ -34,6 +34,9 @@ from easysettings import EasySettings
 
 from flashforge import FlashForge
 
+'''
+Setup the app and all subsytems
+'''
 #some default values
 DEFAULT_PASSWORD = 'flamo'
 
@@ -55,15 +58,30 @@ settings = EasySettings('flamo.conf')
 #printer
 #ff = FlashForge()
 
+'''
+Implementation
+'''
+
+#default route index route
+@app.route('/', methods=['GET'])
+@login_required
+def index():
+	return render_template('index.html')
+
+'''
+Authentication methods
+'''
 #dummy user class for flask-login
 class User(UserMixin):
 	def get_id(self):
 		return 'user'
 
+#function to load user for login-manager
 @login_manager.user_loader
 def load_user(id):
 	return User()
 
+#load user from request header
 @login_manager.request_loader
 def load_user_request(request):
 	token = request.headers.get('Authorization')
@@ -75,12 +93,7 @@ def load_user_request(request):
 	else:
 		return None
 
-#non socketio routes
-@app.route('/', methods=['GET'])
-@login_required
-def index():
-	return render_template('index.html')
-
+#login-view to show when not authenticated
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 	if request.method == 'POST':
@@ -90,11 +103,15 @@ def login():
 	
 	return render_template('login.html')
 
+#route to logout
 @app.route('/logout')
 @login_required
 def logout():
 	logout_user()
 	flask.redirect('/login')
 
+'''
+main-function? run devserver
+'''
 if __name__ == '__main__':
 	socketio.run(app, debug=True)
