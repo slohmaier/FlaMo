@@ -68,18 +68,36 @@ Implementation
 def index():
 	return render_template('index.html')
 
-'''
-SocketIO callbacks
-'''
-
-@socketio.on('get_machine_state')
 def machine_state():
 	if not ff.connected:
 		ff.connect()
 	
 	status = ff.machine_status()
-	print(status)
-	socketio.emit('machine_state',status)
+	socketio.emit('machine_state', status)
+
+def machine_information():
+	if not ff.connected:
+		ff.connect()
+	
+	info = ff.machine_information()
+	socketio.emit('machine_information', info)
+
+'''
+SocketIO callbacks
+'''
+
+@socketio.on('get_machine_state')
+def socketio_machine_state():
+	machine_state()
+
+@socketio.on('get_machine_information')
+def socketio_machine_information():
+	machine_information()
+
+@socketio.on('hello')
+def socketio_hello():
+	machine_state()
+	machine_information()
 
 '''
 Authentication methods
