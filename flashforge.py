@@ -127,7 +127,6 @@ class FlashForge(object):
 
 if __name__ == '__main__':
 	ff = FlashForge()
-	ff.connect()
 	print(ff.machine_information())
 	print(ff.temperatures())
 	print(ff.machine_status())

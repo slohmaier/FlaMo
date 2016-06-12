@@ -28,8 +28,8 @@ import os
 import flask
 from flask import Flask, render_template, request
 from flask_socketio import SocketIO
-from flask.ext.login import LoginManager, UserMixin
-from flask.ext.login import login_required, login_user, logout_user
+from flask_login import LoginManager, UserMixin
+from flask_login import login_required, login_user, logout_user
 from easysettings import EasySettings
 
 from flashforge import FlashForge
@@ -56,7 +56,7 @@ socketio = SocketIO(app)
 settings = EasySettings('flamo.conf')
 
 #printer
-#ff = FlashForge()
+ff = FlashForge(autoconnect=False)
 
 '''
 Implementation
@@ -67,6 +67,19 @@ Implementation
 @login_required
 def index():
 	return render_template('index.html')
+
+'''
+SocketIO callbacks
+'''
+
+@socketio.on('get_machine_state')
+def machine_state():
+	if not ff.connected:
+		ff.connect()
+	
+	status = ff.machine_status()
+	print(status)
+	socketio.emit('machine_state',status)
 
 '''
 Authentication methods
