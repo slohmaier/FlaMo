@@ -66,7 +66,7 @@ Implementation
 @app.route('/', methods=['GET'])
 @login_required
 def index():
-	return render_template('index.html')
+	return render_template('index.html', streamurl=settings.get('streamurl'))
 
 def machine_state():
 	if not ff.connected:
@@ -145,4 +145,4 @@ def logout():
 main-function? run devserver
 '''
 if __name__ == '__main__':
-	socketio.run(app, debug=True)
+	socketio.run(app, host='0.0.0.0', debug=True)
