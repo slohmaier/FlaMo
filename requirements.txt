@@ -2,5 +2,4 @@ Flask
 flask-socketio
 flask-login
 libusb1
-gevent-websocket
 easysettings
