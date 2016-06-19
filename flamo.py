@@ -74,12 +74,16 @@ class FlashForgeIO(Thread):
 		while True:
 			app.logger.info('[FlashForgeIO] Waiting for next GCode command')
 			command = self.queue.get()
-			socketio.emit('terminal', command)
+			if not command.endswith('\n'):
+				command += '\n'
+			socketio.emit('terminal', '> ' + command)
 			app.logger.info('[FlashForgeIO]  Executing command: {0}'.format(command))
 			
 			try:
-				data = ff.gcodecmd(command).strip()
-				socketio.emit('terminal', data)
+				data = ff.gcodecmd(command)
+				if not data.endswith('\n'):
+					data += '\n'
+				socketio.emit('terminal', '< ' + data)
 				self.queue.task_done()
 			except FlashForgeError as error:
 				socketio.emit('terminal', 'COMERROR: {0}'.format(error.message))

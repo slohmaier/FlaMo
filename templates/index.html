@@ -65,9 +65,16 @@
 			<div class="tab-content">
 				<div role="tabpanel" class="tab-pane active" id="home">Home</div>
 				<div role="tabpanel" class="tab-pane" id="settings">
-					<textarea id="terminal"></textarea>
-					<input type="text" class="form-control" id="gcode_cmd" placeholder="M119">
-					<button type="submit" class="btn btn-default" id="gcode_cmd_send">Send GCode Command</button>
+					<textarea id="terminal" class="form-control" rows="20"></textarea>
+					<div class="form-group">
+						<form id="gcode_cmd_form">
+						<label for="gcode_cmd">GCode Command</label>
+						<p>
+							<input type="text" class="form-control" id="gcode_cmd" placeholder="M119">
+							<button type="submit" class="btn btn-default" id="gcode_cmd_send">Send</button>
+						</p>
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>
