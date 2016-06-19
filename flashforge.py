@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 '''
 
-import re
+import time
 import usb1
 
 class FlashForgeError(Exception):
@@ -35,98 +35,75 @@ class FlashForge(object):
 	ENDPOINT_CMD_OUT  = 0x01
 	ENDPOINT_DATA_IN  = 0x83
 	ENDPOINT_DATA_OUT = 0x03
+	BUFFER_SIZE = 128
 	
 	def __init__(self, vendorid=0x2b71, deviceid=0x0001, autoconnect=True):
-		self._context = usb1.USBContext()
 		self.vendorid = vendorid
 		self.deviceid = deviceid
-		self._handle = self._context.openByVendorIDAndProductID(self.vendorid, self.deviceid)
-		self.connected = False
-		self.autoconnect = autoconnect
 		
-		if self.autoconnect:
-			self.connect()
-	
-	def _gcodecmd(self, cmd):
+		self._context = usb1.USBContext()
+		self._handle = self._context.openByVendorIDAndProductID(self.vendorid, self.deviceid)
+		self._handle.claimInterface(0)
+
+	def gcodecmd(self, cmd, timeout=10, retry_counter=5, retry_timeout=1):
 		try:			
 			self._handle.bulkWrite(self.ENDPOINT_CMD_IN, '~{0}\r\n'.format(cmd).encode())
 			
+			#read data until ok signals end
 			data = ''
-			while True:
-				newdata = self._handle.bulkRead(self.ENDPOINT_CMD_OUT, 128).decode().strip()
-				if newdata == 'ok':
-					return data.strip()
-				elif newdata.endswith('ok'):
-					return data + newdata[:-2]
-				else:
-					data += '{0}\n' .format(newdata)
-		except usb1.USBError as usberror:
-			self.connected = False
-			raise FlashForgeError('USB Error')
-	
-	def connect(self):
-		if not self.connected:
-			self._handle.claimInterface(0)
+			cmd_done = False
+			while not cmd_done:
+				newdata = self._handle.bulkRead(self.ENDPOINT_CMD_OUT, self.BUFFER_SIZE, int(timeout*1000.0)).decode()
+
+				if newdata.strip() == 'ok':
+					cmd_done = True
+				elif newdata.strip().endswith('ok'):
+					cmd_done = True
+				
+				data = data + newdata
 			
-			#request control
-			res = self._gcodecmd('M601 S0').strip()
-			if res.endswith('Control Success.'):
-				self.connected = True
-			else:
-				raise FlashForgeError('Could not get control: {0}'.format(res))
+			#decode data
+			return data.replace('\r', '')
+		except usb1.USBError as usberror:
+			#retry if retry_counter set
+			if retry_counter > 0:
+				#sleep and retry claiming interface
+				success = False
+				while not success and retry_counter > 0:
+					#wait for timeout
+					time.sleep(retry_timeout)
+					
+					#clean everything up
+					self._handle.releaseInterface(0)
+					self._handle.close()
+					self._context.close()
+					
+					#open device
+					self._context = usb1.USBContext()
+					self._handle = self._context.openByVendorIDAndProductID(self.vendorid, self.deviceid)
+					success = self._handle.claimInterface(0)
+					retry_counter = retry_counter - 1
+				
+				if success:
+					#if connection successfull gain control.
+					self.gcodecmd('M601 S0')
+					return self.gcodecmd(cmd, timeout, retry_counter-1, retry_timeout)
+			
+			raise FlashForgeError('USB Error', usberror)
 	
-	@staticmethod
-	def match_info(identifier, info_raw):
-		pattern = '.*' + identifier + ': ([\S ]*)'
-		return re.match(pattern, info_raw, re.DOTALL).group(1)
-	
-	def machine_information(self):
-		info_raw = self._gcodecmd('M115') + '\n'
-		
-		cordmatch = re.match(r'.*X:.*(\d+).*Y:.*(\d+).*Z:.*(\d+)', info_raw, re.DOTALL)
-		
-		return {
-			'type': self.match_info('Machine Type', info_raw),
-			'name': self.match_info('Machine Name', info_raw),
-			'firmware': self.match_info('Firmware', info_raw),
-			'sn': self.match_info('SN', info_raw),
-			'position' : {
-				'x': float(cordmatch.group(1)),
-				'y': float(cordmatch.group(2)),
-				'z': float(cordmatch.group(3))
-			},
-			'tools': self.match_info('Tool Count', info_raw)
-		}
-	
-	def machine_status(self):
-		info_raw = self._gcodecmd('M119')
-		
-		endstopmatch = re.match(r'.*Endstop: (\S+): (\d) (\S+): (\d) (\S+): (\d)', info_raw, re.DOTALL)
-		endstopdict = {}
-		for i in range(0, int(len(endstopmatch.groups())/2)):
-			endstopdict[endstopmatch.groups()[i*2]] = endstopmatch.groups()[i*2+1]
-		
-		return {
-			'status': self.match_info('MachineStatus', info_raw),
-			'movemode': self.match_info('MoveMode', info_raw),
-			'endstops': endstopdict
-		}
-	
-	def temperatures(self):
-		info_raw = self._gcodecmd('M105')
-		temps = {}
-		for identifier, current, target in re.findall(r'(\w+):(\d+) /(\d+)', info_raw):
-			temps[identifier] = (current, target)
-		return temps
-	
-	def set_leds(self, r, g, b):
-		self._gcodecmd('M146 r{0} g{1}, b{2}'.format(r, g, b))
-	
-	def emergency_stop(self):
-		self._gcodecmd('M112')
+	def __del__(self):
+		try:
+			self._handle.releaseInterface(0)
+		except:
+			pass
 
 if __name__ == '__main__':
 	ff = FlashForge()
-	print(ff.machine_information())
-	print(ff.temperatures())
-	print(ff.machine_status())
+	print(ff.gcodecmd('M601 S0'))
+	print(ff.gcodecmd('M115'))
+	try:
+		print(ff.gcodecmd('M20'))
+	except:
+		pass
+	print(ff.gcodecmd('M119'))
+	print(ff.gcodecmd('M105'))

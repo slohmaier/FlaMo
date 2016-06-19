@@ -24,6 +24,10 @@ SOFTWARE.
 '''
 
 import os
+import time
+
+from queue import Queue
+from threading import Thread
 
 import flask
 from flask import Flask, render_template, request
@@ -55,12 +59,32 @@ socketio = SocketIO(app)
 #settings
 settings = EasySettings('flamo.conf')
 
-#printer
-ff = FlashForge(autoconnect=False)
-
 '''
 Implementation
 '''
+class FlashForgeIO(Thread):
+	def __init__(self, reconnect_timeout=5, vendorid=0x2b71, deviceid=0x0001):
+		Thread.__init__(self)
+		self.queue = Queue()
+	
+	def run(self):
+		print('[FlashforgeIO] started')
+		app.logger.info('[FlashforgeIO] started')
+		ff = FlashForge()
+		while True:
+			app.logger.info('[FlashForgeIO] Waiting for next GCode command')
+			command = self.queue.get()
+			socketio.emit('terminal', command)
+			app.logger.info('[FlashForgeIO]  Executing command: {0}'.format(command))
+			
+			try:
+				data = ff.gcodecmd(command).strip()
+				socketio.emit('terminal', data)
+				self.queue.task_done()
+			except FlashForgeError as error:
+				socketio.emit('terminal', 'COMERROR: {0}'.format(error.message))
+
+ffio = FlashForgeIO()
 
 #default route index route
 @app.route('/', methods=['GET'])
@@ -68,36 +92,16 @@ Implementation
 def index():
 	return render_template('index.html', streamurl=settings.get('streamurl'))
 
-def machine_state():
-	if not ff.connected:
-		ff.connect()
-	
-	status = ff.machine_status()
-	socketio.emit('machine_state', status)
-
-def machine_information():
-	if not ff.connected:
-		ff.connect()
-	
-	info = ff.machine_information()
-	socketio.emit('machine_information', info)
-
 '''
 SocketIO callbacks
 '''
 
-@socketio.on('get_machine_state')
-def socketio_machine_state():
-	machine_state()
-
-@socketio.on('get_machine_information')
-def socketio_machine_information():
-	machine_information()
-
-@socketio.on('hello')
-def socketio_hello():
-	machine_state()
-	machine_information()
+@socketio.on('gcodecmd')
+def socketio_machine_state(cmd):
+	if not ffio.is_alive():
+		ffio.start()
+	print('LALA {0}'.format(cmd))
+	ffio.queue.put(cmd)
 
 '''
 Authentication methods

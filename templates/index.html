@@ -59,12 +59,16 @@
 		<div class="container col-md-6">
 			<ul class="nav nav-tabs" role="tablist">
 				<li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
-				<li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
+				<li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Terminal</a></li>
 			</ul>
 			
 			<div class="tab-content">
 				<div role="tabpanel" class="tab-pane active" id="home">Home</div>
-				<div role="tabpanel" class="tab-pane" id="settings">Settings</div>
+				<div role="tabpanel" class="tab-pane" id="settings">
+					<textarea id="terminal"></textarea>
+					<input type="text" class="form-control" id="gcode_cmd" placeholder="M119">
+					<button type="submit" class="btn btn-default" id="gcode_cmd_send">Send GCode Command</button>
+				</div>
 			</div>
 		</div>
 
