@@ -1,5 +1,6 @@
 Flask
 flask-socketio
 flask-login
+flask-reverse-proxy
 libusb1
 easysettings

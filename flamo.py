@@ -34,6 +34,7 @@ from flask import Flask, render_template, request
 from flask_socketio import SocketIO
 from flask_login import LoginManager, UserMixin
 from flask_login import login_required, login_user, logout_user
+from flask_reverse_proxy import FlaskReverseProxied
 from easysettings import EasySettings
 
 from flashforge import FlashForge
@@ -47,6 +48,7 @@ DEFAULT_PASSWORD = 'flamo'
 #create the app
 app = Flask('flamo')
 app.config['SECRET_KEY'] = os.environ.get('FLAMO_SECRET_KEY', 'flamo')
+proxied = FlaskReverseProxied(app)
 
 #login manager
 login_manager = LoginManager()
@@ -68,7 +70,6 @@ class FlashForgeIO(Thread):
 		self.queue = Queue()
 	
 	def run(self):
-		print('[FlashforgeIO] started')
 		app.logger.info('[FlashforgeIO] started')
 		ff = FlashForge()
 		while True:
@@ -96,7 +97,7 @@ ffio = FlashForgeIO()
 def index():
 	return render_template('index.html', streamurl=settings.get('streamurl'))
 
-'''
+'''00
 SocketIO callbacks
 '''
 
@@ -138,7 +139,7 @@ def login():
 	if request.method == 'POST':
 		request.form['password'] == settings.get('password', 'flamo')
 		login_user(User())
-		return flask.redirect('/')
+		return flask.redirect(request.form['next'])
 	
 	return render_template('login.html')
 
@@ -153,4 +154,4 @@ def logout():
 main-function? run devserver
 '''
 if __name__ == '__main__':
-	socketio.run(app, host='0.0.0.0', debug=True)
+	socketio.run(app, host='0.0.0.0', port=5002, debug=True)
