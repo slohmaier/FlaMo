@@ -4,19 +4,10 @@
    Author's custom styles
    ========================================================================== */
 
+#machine_webcam img {
+	max-height: 20em;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#panel-webcam {
+	margin: auto;
+}

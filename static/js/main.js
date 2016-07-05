@@ -1,8 +1,9 @@
-var socket = io.connect();
+var socket = io.connect(window.URL);
 
 //refresh machine information
 function refresh_machine_information() {
 	$('#machine_name').text(flashforge.machine.name);
+	$('#machine_type').text(flashforge.machine.type);
 }
 
 //refresh machine status

@@ -27,44 +27,35 @@
 		<!--[if lt IE 8]>
 			<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 		<![endif]-->
-		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-		  <div class="container">
-			<div class="navbar-header">
-			  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			  </button>
-			  <a class="navbar-brand" href="#">FlaMo</a>
-			</div>
-			<p class="navbar-text navbar-right">Machine: <span id="machine_name">Unknown</span> State: <span id="machine_state">UNKNOWN</span></p>
-			<!--/.navbar-collapse -->
-		  </div>
-		</nav>
 		
-		<div class="container col-md-6">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">Webcam</h3>
-				</div>
+		<div class="container">
+			<div class="panel panel-default panel-webcam">
+				<div class="panel-heading">Webcam</div>
 				<div class="panel-body">
-					<a href="#" class="thumbnail">
+					<a href="#" class="thumbnail" id="machine_webcam">
 						<img src="{{ streamurl }}" /><!--TODO: empty picture for None -->
 					</a>
 				</div>
 			</div>
-		</div>
-		
-		<div class="container col-md-6">
-			<ul class="nav nav-tabs" role="tablist">
-				<li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
-				<li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Terminal</a></li>
-			</ul>
-			
-			<div class="tab-content">
-				<div role="tabpanel" class="tab-pane active" id="home">Home</div>
-				<div role="tabpanel" class="tab-pane" id="settings">
+
+			<div class="panel panel-default">
+				<div class="panel-heading">Machine-Information:</div>
+				<div class="panel-body">
+					<b>Name:</b><span id="machine_name">-</span><br>
+					<b>Type</b><span id="machine_type">-</span><br>
+					<b>State:</b><span id="machine_state">-</span>
+				</div>
+			</div>
+
+			<div class="panel panel-default">
+				<div class="panel-heading">Temperature:</div>
+				<div class="panel-body">
+				</div>
+			</div>
+
+			<div class ="panel panel-default">
+				<div class="panel-heading">Terminal</div>
+				<div class="panel-body">
 					<textarea id="terminal" class="form-control" rows="20"></textarea>
 					<div class="form-group">
 						<form id="gcode_cmd_form">
@@ -77,6 +68,7 @@
 					</div>
 				</div>
 			</div>
+
 		</div>
 
 		<script src="static/js/vendor/jquery-1.11.2.min.js"></script>
