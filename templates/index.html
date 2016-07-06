@@ -12,12 +12,6 @@
 		<link rel="apple-touch-icon" href="static/apple-touch-icon.png">
 
 		<link rel="stylesheet" href="static/css/bootstrap.min.css">
-		<style>
-			body {
-				padding-top: 50px;
-				padding-bottom: 20px;
-			}
-		</style>
 		<link rel="stylesheet" href="static/css/bootstrap-theme.min.css">
 		<link rel="stylesheet" href="static/css/main.css">
 
@@ -28,8 +22,16 @@
 			<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 		<![endif]-->
 		
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<div class="navbar-center flamo-header">
+					<img src="static/img/logo.png">FlaMo
+				</div>
+			</div>			
+		</nav>
+		
 		<div class="container">
-			<div class="panel panel-default panel-webcam">
+			<div class="panel panel-default flamo-card">
 				<div class="panel-heading">Webcam</div>
 				<div class="panel-body">
 					<a href="#" class="thumbnail" id="machine_webcam">
@@ -38,7 +40,7 @@
 				</div>
 			</div>
 
-			<div class="panel panel-default">
+			<div class="panel panel-default flamo-card">
 				<div class="panel-heading">Machine-Information:</div>
 				<div class="panel-body">
 					<b>Name:</b><span id="machine_name">-</span><br>
@@ -47,13 +49,13 @@
 				</div>
 			</div>
 
-			<div class="panel panel-default">
+			<div class="panel panel-default flamo-card">
 				<div class="panel-heading">Temperature:</div>
 				<div class="panel-body">
 				</div>
 			</div>
 
-			<div class ="panel panel-default">
+			<div class ="panel panel-default flamo-card">
 				<div class="panel-heading">Terminal</div>
 				<div class="panel-body">
 					<textarea id="terminal" class="form-control" rows="20"></textarea>

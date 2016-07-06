@@ -11,3 +11,20 @@
 #panel-webcam {
 	margin: auto;
 }
+
+.flamo-header {
+	font-weight: bold;
+	text-align: center;
+}
+
+.flamo-header img {
+	max-height: 3em;
+}
+
+.flamo-card {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: auto;
+	margin-top: auto;
+}
