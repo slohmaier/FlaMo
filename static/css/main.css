@@ -23,8 +23,6 @@
 
 .flamo-card {
 	display: block;
-	margin-left: auto;
-	margin-right: auto;
-	margin-bottom: auto;
-	margin-top: auto;
+	float: left;
+	margin: 10px;
 }

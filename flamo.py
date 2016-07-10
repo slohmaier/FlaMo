@@ -37,7 +37,7 @@ from flask_login import login_required, login_user, logout_user
 from flask_reverse_proxy import FlaskReverseProxied
 from easysettings import EasySettings
 
-from flashforge import FlashForge
+from flashforge import FlashForge, FlashForgeError
 
 '''
 Setup the app and all subsytems

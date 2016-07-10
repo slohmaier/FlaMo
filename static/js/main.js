@@ -8,8 +8,17 @@ function refresh_machine_information() {
 
 //refresh machine status
 function refresh_machine_status() {
-	$('#machine_state').text(flashforge.machine.status);
+	switch (flashforge.machine.status) {
+		case 'READY':
+			$('#machine_state').text('Idling');
+			break;
+		case 'BUILDING_FROM_SD':
+			$('#machine_state').text('Printing from SD Card ' + flashforge.machine.sdcard.progress.toString() + '%');
+			break;
+	}
 }
+var machine_state_uimap = {
+};
 
 //handle output from printer
 socket.on('terminal', function(data) {
@@ -20,7 +29,7 @@ socket.on('terminal', function(data) {
 		command = flashforge.parse_data(data.substr(2));
 		switch (command) {
 			case 'M115': refresh_machine_information(); break;
-			case 'M119': refresh_machine_status(); break;
+			case 'M119': case 'M27': refresh_machine_status(); break;
 			default: break;
 		}
 	}
@@ -42,3 +51,4 @@ $('#gcode_cmd_form').submit(function(e) {
 socket.emit('gcodecmd', 'M105');
 socket.emit('gcodecmd', 'M115');
 socket.emit('gcodecmd', 'M119');
+socket.emit('gcodecmd', 'M27');
