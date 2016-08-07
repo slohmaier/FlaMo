@@ -23,6 +23,7 @@ var machine_state_uimap = {
 //handle output from printer
 socket.on('terminal', function(data) {
 	$('#terminal').text($('#terminal').text() + data);
+	$('#terminal').scrollTop($('#terminal')[0].scrollHeight);
 	
 	if (data.startsWith('< ')) {
 		//update ui if neccessary
