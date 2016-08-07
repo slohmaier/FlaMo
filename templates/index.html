@@ -1,111 +1,96 @@
-<!doctype html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
-	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<title></title>
-		<meta name="description" content="">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="apple-touch-icon" href="static/apple-touch-icon.png">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google" value="notranslate">
 
-		<link rel="stylesheet" href="static/css/bootstrap.min.css">
-		<link rel="stylesheet" href="static/css/bootstrap-theme.min.css">
-		<link rel="stylesheet" href="static/css/main.css">
+  <title>FlaMo</title>
 
-		<script src="static/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
-	</head>
-	<body>
-		<!--[if lt IE 8]>
-			<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-		<![endif]-->
-		
-		<nav class="navbar navbar-default">
-			<div class="container-fluid">
-				<div class="navbar-center flamo-header">
-					<img src="static/img/logo.png">FlaMo
-				</div>
-			</div>			
-		</nav>
-		
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Bootcards CSS files for desktop, iOS and Android -->
+  <!-- You'll only need to load one of these (depending on the device you're using) in production -->
+
+  <!-- Bootcards CSS files for desktop, iOS and Android -->
+  <!-- You'll only need to load one of these (depending on the device you're using) in production -->
+  <!-- <link href="//cdnjs.cloudflare.com/ajax/libs/bootcards/1.1.1/css/bootcards-ios.min.css" rel="stylesheet"> -->
+   <link href="//cdnjs.cloudflare.com/ajax/libs/bootcards/1.1.1/css/bootcards-desktop.min.css" rel="stylesheet">
+  <!--<link href="//cdnjs.cloudflare.com/ajax/libs/bootcards/1.1.1/css/bootcards-android.min.css" rel="stylesheet">-->
+
+  <!-- Font awesome -->
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
+
+</head>
+
+<body class="bootcards-nofooter">
+	<div class="navbar navbar-default navbar-fixed-top" role="navigation">
 		<div class="container">
-			<div class="panel panel-default flamo-card">
-				<div class="panel-heading">Webcam</div>
-				<div class="panel-body">
-					<a href="#" class="thumbnail" id="machine_webcam">
-						<img src="{{ streamurl }}" /><!--TODO: empty picture for None -->
-					</a>
-				</div>
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
 			</div>
-
-			<div class="panel panel-default flamo-card">
-				<div class="panel-heading">Machine-Information:</div>
-				<div class="panel-body">
-					<b>Name:</b><span id="machine_name">-</span><br>
-					<b>Type</b><span id="machine_type">-</span><br>
-					<b>State:</b><span id="machine_state">-</span>
-				</div>
-			</div>
-
-			<div class="panel panel-default flamo-card">
-				<div class="panel-heading">Temperature:</div>
-				<div class="panel-body">
-				</div>
-			</div>
-			
-			<div class="panel panel-default flamo-card">
-				<div class="panel-heading">Control:</div>
-				<div class="panel-body">
-					<button id="flamo-btn-emestop" class="btn btn-danger btn-lg">EMERGENCY<br>STOP</button>
-					<div class="panel panel-default">
-						<div class="panel-heading">Movement</div>
-						<div class="panel-body">
-							<div class="row">
-								<div class="col-md-4"></div>
-								<div class="col-md-4"><button class="btn btn-default"><span class="glyphicon glyphicon-arrow-up"></span></button></div>
-								<div class="col-md-4"></div>
-							</div>
-							<div class="row">
-								<div class="col-md-4"><button class="btn btn-default"><span class="glyphicon glyphicon-arrow-left"></span></button></div>
-								<div class="col-md-4"><button class="btn btn-default"><span class="glyphicon glyphicon-home"></span></button></div>
-								<div class="col-md-4"><button class="btn btn-default"><span class="glyphicon glyphicon-arrow-right"></span></button></div>
-							</div>
-							<div class="row">
-								<div class="col-md-4"></div>
-								<div class="col-md-4"><button class="btn btn-default"><span class="glyphicon glyphicon-arrow-down"></span></button></div>
-								<div class="col-md-4"></div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div class ="panel panel-default flamo-card">
-				<div class="panel-heading">Terminal</div>
-				<div class="panel-body">
-					<textarea id="terminal" class="form-control" rows="20"></textarea>
-					<div class="form-group">
-						<form id="gcode_cmd_form">
-						<label for="gcode_cmd">GCode Command</label>
-						<p>
-							<input type="text" class="form-control" id="gcode_cmd" placeholder="M119">
-							<button type="submit" class="btn btn-default" id="gcode_cmd_send">Send</button>
-						</p>
-						</form>
-					</div>
-				</div>
-			</div>
-
+			<button type="button" class="btn btn-default btn-back navbar-left pull-left hidden " onclick="history.back()">
+				<i class="fa fa-lg fa-chevron-left"></i>
+				<span>Back</span>
+			</button>
+			<button type="button" class="btn btn-default btn-menu navbar-left pull-left offcanvas-toggle">
+				<i class="fa fa-lg fa-bars"></i>
+				<span>Menu</span>
+			</button>
+			<a class="navbar-brand" href="/">FlaMo</a>
 		</div>
+	</div>
+	
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-7 bootcards-cards">
+				...your Bootcards Cards go here...
+			</div>
+		</div>
+	</div>
 
-		<script src="static/js/vendor/jquery-1.11.2.min.js"></script>
-		<script src="static/js/vendor/bootstrap.min.js"></script>
-		<script src="static/js/vendor/socket.io-1.4.5.js"></script>
 
-		<script src="static/js/flashforge.js"></script>
-		<script src="static/js/main.js"></script>
-		
-	</body>
+    <!-- Bootstrap & jQuery core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+    <!-- Bootcards JS -->
+    <script src="static/js/vendor/bootcards.js"></script>
+
+    <!--recommended: FTLabs FastClick library-->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.3/fastclick.min.js"></script>
+
+    <script type="text/javascript">
+		/*
+		* Initialize Bootcards.
+		* 
+		* Parameters:
+		* - offCanvasBackdrop (boolean): show a backdrop when the offcanvas is shown
+		* - offCanvasHideOnMainClick (boolean): hide the offcanvas menu on clicking outside the off canvas
+		* - enableTabletPortraitMode (boolean): enable single pane mode for tablets in portraitmode
+		* - disableRubberBanding (boolean): disable the iOS rubber banding effect
+		* - disableBreakoutSelector (boolean) : for iOS apps that are added to the home screen:
+					jQuery selector to target links for which a fix should be added to not
+					allow those links to break out of fullscreen mode.
+		*/
+		bootcards.init( {
+			offCanvasBackdrop : true,
+			offCanvasHideOnMainClick : true,
+			enableTabletPortraitMode : true,
+			disableRubberBanding : true 
+		});
+		//enable FastClick
+		window.addEventListener('load', function() {
+			FastClick.attach(document.body);
+		}, false);
+    </script>
+  </body>
 </html>
