@@ -48,7 +48,7 @@ $('#gcode_cmd_form').submit(function(e) {
 });
 
 //ask for basic information at the start
-//socket.emit('gcodecmd', 'M105');
-//socket.emit('gcodecmd', 'M115');
-//socket.emit('gcodecmd', 'M119');
-//socket.emit('gcodecmd', 'M27');
+socket.emit('gcodecmd', 'M105');
+socket.emit('gcodecmd', 'M115');
+socket.emit('gcodecmd', 'M119');
+socket.emit('gcodecmd', 'M27');

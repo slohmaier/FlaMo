@@ -50,6 +50,25 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-7 bootcards-cards">
+				<div class="panel panel-default">
+					<div class="panel-heading clearfix">
+						<h3 class="panel-title pull-left">Printer Information</h3>
+					</div>
+					<div class="list-group">
+						<div class="list-group-item">
+							<p class="list-group-item-text">Machine Name</p>
+							<h4 class="list-group-item-heading" id="machine_name"></h4>
+						</div>
+						<div class="list-group-item">
+							<p class="list-group-item-text">Machine Type</p>
+							<h4 class="list-group-item-heading" id="machine_type"></h4>
+						</div>
+						<div class="list-group-item">
+							<p class="list-group-item-text">Machine State</p>
+							<h4 class="list-group-item-heading" id="machine_state"></h4>
+						</div>
+					</div>
+				</div>
 				<div class="panel panel-default bootcards-media">
 					<div class="panel-heading">
 						<h3 class="panel-title">Webcam</h3>
@@ -97,5 +116,10 @@
 			FastClick.attach(document.body);
 		}, false);
     </script>
+    
+    <script src="static/js/vendor/socket.io-1.4.5.js"></script>
+    
+    <script src="static/js/flashforge.js"></script>
+    <script src="static/js/main.js"></script>
   </body>
 </html>
