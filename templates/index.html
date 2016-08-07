@@ -15,8 +15,8 @@
 
   <!-- Bootcards CSS files for desktop, iOS and Android -->
   <!-- You'll only need to load one of these (depending on the device you're using) in production -->
-  <!-- <link href="//cdnjs.cloudflare.com/ajax/libs/bootcards/1.1.1/css/bootcards-ios.min.css" rel="stylesheet"> -->
-   <link href="//cdnjs.cloudflare.com/ajax/libs/bootcards/1.1.1/css/bootcards-desktop.min.css" rel="stylesheet">
+  <!--<link href="//cdnjs.cloudflare.com/ajax/libs/bootcards/1.1.1/css/bootcards-ios.min.css" rel="stylesheet">-->
+  <link href="//cdnjs.cloudflare.com/ajax/libs/bootcards/1.1.1/css/bootcards-desktop.min.css" rel="stylesheet">
   <!--<link href="//cdnjs.cloudflare.com/ajax/libs/bootcards/1.1.1/css/bootcards-android.min.css" rel="stylesheet">-->
 
   <!-- Font awesome -->
@@ -27,23 +27,17 @@
 <body class="bootcards-nofooter">
 	<div class="navbar navbar-default navbar-fixed-top" role="navigation">
 		<div class="container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-			</div>
-			<button type="button" class="btn btn-default btn-back navbar-left pull-left hidden " onclick="history.back()">
-				<i class="fa fa-lg fa-chevron-left"></i>
-				<span>Back</span>
-			</button>
-			<button type="button" class="btn btn-default btn-menu navbar-left pull-left offcanvas-toggle">
-				<i class="fa fa-lg fa-bars"></i>
-				<span>Menu</span>
-			</button>
 			<a class="navbar-brand" href="/">FlaMo</a>
+			<div class="navbar-collapse collapse pull-right">
+				<ul class="nav navbar-nav">
+					<li class="active">
+						<a href="/logout">
+							<i class="fa fa-sign-out"></i>
+							Logout
+						</a>
+					</li>
+				</ul>
+			</div>
 		</div>
 	</div>
 	
@@ -76,7 +70,7 @@
 					<div class="panel-heading">
 						<h3 class="panel-title">Webcam</h3>
 					</div>
-					<img src="{{streamurl}} class="img-responsive"/>
+					<img src="{{streamurl}}" class="img-responsive"/>
 				</div>
 				
 				<!-- CARD: Terminal -->
