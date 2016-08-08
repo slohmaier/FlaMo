@@ -20,9 +20,36 @@ function refresh_machine_status() {
 var machine_state_uimap = {
 };
 
+//refresh tempchart and text display
+var chart = new CanvasJS.Chart('tempchart', {
+	title: {text: 'Loading ...'},
+	data: [{
+		type: 'line',
+		dataPoints: []
+	}]
+});
+chart.render();
+
+function refresh_temps() {
+	if (chart.options.data[0].dataPoints.length == 0) {
+		var newdata = [];
+		var temp_titles = Object.keys(flashforge.machine.tempdatapoints);
+		for (var i=0; i<temp_titles.length; i++) {
+			var temp_title = temp_titles[i];
+			newdata.push({
+				type: 'line',
+				dataPoints: flashforge.machine.tempdatapoints[temp_title]
+			});
+		}
+		chart.options.data = newdata;
+	}
+	chart.render();
+};
+
 //handle output from printer
 socket.on('terminal', function(data) {
 	$('#terminal').text($('#terminal').text() + data);
+	$('#terminal').scrollTop($('#terminal')[0].scrollHeight);
 	
 	if (data.startsWith('< ')) {
 		//update ui if neccessary
@@ -30,6 +57,7 @@ socket.on('terminal', function(data) {
 		switch (command) {
 			case 'M115': refresh_machine_information(); break;
 			case 'M119': case 'M27': refresh_machine_status(); break;
+			case 'M105': refresh_temps(); break;
 			default: break;
 		}
 	}

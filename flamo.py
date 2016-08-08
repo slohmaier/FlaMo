@@ -139,7 +139,7 @@ def login():
 	if request.method == 'POST':
 		request.form['password'] == settings.get('password', 'flamo')
 		login_user(User())
-		return flask.redirect(request.form['next'])
+		return flask.redirect(request.form['next'], code=302)
 	
 	return render_template('login.html')
 
@@ -148,7 +148,7 @@ def login():
 @login_required
 def logout():
 	logout_user()
-	flask.redirect('/login')
+	return flask.redirect('/login', code=302)
 
 '''
 main-function? run devserver

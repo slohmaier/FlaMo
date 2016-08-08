@@ -1,28 +1,4 @@
-
-
-/* ==========================================================================
-   Author's custom styles
-   ========================================================================== */
-
-#machine_webcam img {
-	max-height: 20em;
-}
-
-#panel-webcam {
-	margin: auto;
-}
-
-.flamo-header {
-	font-weight: bold;
-	text-align: center;
-}
-
-.flamo-header img {
-	max-height: 3em;
-}
-
-.flamo-card {
-	display: block;
-	float: left;
-	margin: 10px;
+#tempchart {
+    max-width: 100%;
+    height: 6em;
 }

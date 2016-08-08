@@ -10,7 +10,9 @@ var flashforge = new function() {
 			zmin: null, zmax: null},
 		status: 'Unknown',
 		movemode: 'Unknown',
-		sdcard: {progress: 0}
+		sdcard: {progress: 0},
+		tempdatapoints: {},
+		tempdata: {}
 	};
 	
 	this.parse_data = function(data) {
@@ -48,6 +50,31 @@ var flashforge = new function() {
 				match = /^SD printing byte (\d+)\/(\d+)\n$/.exec(lines[1]);
 				this.machine.sdcard.progress = 100 * parseInt(match[1]) / parseInt(match[2]);
 				break;
+			//Temperatures
+			case 'M105':
+				var re = /(\S+)\:\s*(\d+)\s*\/(\d+)/g;
+				while (match = re.exec(lines[1])) {
+					var temp_title = match[1];
+					var temp_current = match[2];
+					var temp_target = match[3];
+					
+					//set current temp
+					this.machine.tempdata[temp_title] = {
+						target: temp_target,
+						current: temp_current
+					};
+					
+					//create datapoints list if it does not exist
+					if (this.machine.tempdatapoints[temp_title] === undefined) {
+						this.machine.tempdatapoints[temp_title] = [];
+					}
+					
+					//add datapoint
+					this.machine.tempdatapoints[temp_title].push({
+						x: new Date(),
+						y: temp_current
+					});
+				}
 			default:
 				break;
 		}
