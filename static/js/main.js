@@ -84,7 +84,24 @@ socket.on('terminal', function(data) {
 		command = flashforge.parse_data(data.substr(2));
 		switch (command) {
 			case 'M115': refresh_machine_information(); break;
-			case 'M119': case 'M27': refresh_machine_status(); break;
+			case 'M119':
+				refresh_machine_status();
+				setTimeout(
+					function() {
+						socket.emit('gcodecmd', 'M119');
+					},
+					5000
+				);
+				break;
+			case 'M27':
+				refresh_machine_status();
+				setTimeout(
+					function() {
+						socket.emit('gcodecmd', 'M27');
+					},
+					5000
+				);
+				break;
 			case 'M105': refresh_temps(); break;
 			default: break;
 		}
