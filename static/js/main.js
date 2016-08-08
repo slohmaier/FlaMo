@@ -1,4 +1,4 @@
-var socket = io.connect(window.URL);
+var socket = io.connect();
 
 //refresh machine information
 function refresh_machine_information() {
