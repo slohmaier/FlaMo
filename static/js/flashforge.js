@@ -83,7 +83,7 @@ var flashforge = new function() {
 						x: current_date,
 						y: parseInt(temp_target)
 					});
-					if (current_date.now() - this.machine.tempdatapoints[temp_title][0].now() > MAX_TEMPCHART_AGE) {
+					if (current_date.getTime() - this.machine.tempdatapoints[temp_title][0].x.getTime() > MAX_TEMPCHART_AGE) {
 						this.machine.tempdatapoints[temp_title].shift();
 						this.machine.targetdatapoints[temp_title].shift();
 					}
