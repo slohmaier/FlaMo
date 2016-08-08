@@ -29,6 +29,16 @@ var chart = new CanvasJS.Chart('tempchart', {
 	}]
 });
 chart.render();
+var chart_colors = [
+	'#ff0000',
+	'#00ff00',
+	'#0000ff'
+];
+var target_colors = [
+	'rgba(255,0,0,0.5)',
+	'rgba(0,255,0,0.5)',
+	'rgba(0,0,255,0.5)',
+];
 
 function refresh_temps() {
 	if (chart.options.data[0].dataPoints.length == 0) {
@@ -38,12 +48,30 @@ function refresh_temps() {
 			var temp_title = temp_titles[i];
 			newdata.push({
 				type: 'line',
+				showInLegend: true,
+				name: temp_title,
+				lineThickness: 2,
+				color: chart_colors[i],
 				dataPoints: flashforge.machine.tempdatapoints[temp_title]
+			});
+			newdata.push({
+				type: 'stepLine',
+				showInLegend: false,
+				lineThickness: 2,
+				color: target_colors[i],
+				dataPoints: flashforge.machine.targetdatapoints[temp_title]
 			});
 		}
 		chart.options.data = newdata;
+		chart.options.title.text = '';
 	}
 	chart.render();
+	setTimeout(
+		function() {
+			socket.emit('gcodecmd', 'M105');
+		},
+		1000
+	);
 };
 
 //handle output from printer

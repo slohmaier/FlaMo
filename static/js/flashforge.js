@@ -1,3 +1,5 @@
+var MAX_TEMPCHART_AGE = 60000; //60s
+
 var flashforge = new function() {
 	this.machine = {
 		name: null,
@@ -12,6 +14,7 @@ var flashforge = new function() {
 		movemode: 'Unknown',
 		sdcard: {progress: 0},
 		tempdatapoints: {},
+		targetdatapoints: {},
 		tempdata: {}
 	};
 	
@@ -67,13 +70,23 @@ var flashforge = new function() {
 					//create datapoints list if it does not exist
 					if (this.machine.tempdatapoints[temp_title] === undefined) {
 						this.machine.tempdatapoints[temp_title] = [];
+						this.machine.targetdatapoints[temp_title] = [];
 					}
 					
 					//add datapoint
+					var current_date = new Date();
 					this.machine.tempdatapoints[temp_title].push({
-						x: new Date(),
-						y: temp_current
+						x: current_date,
+						y: parseInt(temp_current)
 					});
+					this.machine.targetdatapoints[temp_title].push({
+						x: current_date,
+						y: parseInt(temp_target)
+					});
+					if (current_date.now() - this.machine.tempdatapoints[temp_title][0].now() > MAX_TEMPCHART_AGE) {
+						this.machine.tempdatapoints[temp_title].shift();
+						this.machine.targetdatapoints[temp_title].shift();
+					}
 				}
 			default:
 				break;
