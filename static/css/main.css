@@ -7,22 +7,31 @@
     width: 6em !important;
 }
 
-#controlpanel {
+.controlpanel {
     display: block;
     width: auto;
 }
 
-#controlpanel td {
-    width: 1em;
+.controlpanel td {
+    width: 4em;
     height: 1em;
+    padding: 0px;
     border-top: 0px;
     text-align: center;
     vertical-align: center;
 }
 
+#emebutton-container {
+    padding: 1em !important;
+}
+
 #emebutton {
-    display: block;
-    width: 10em;
-    height: 10em;
+    width: 100%;
+    height: 100%;
     font-weight: bold;
+}
+
+.speed-control {
+    width: 6em;
+    display: inline;
 }
