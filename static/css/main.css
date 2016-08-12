@@ -6,3 +6,23 @@
 .tempset-input {
     width: 6em !important;
 }
+
+#controlpanel {
+    display: block;
+    width: auto;
+}
+
+#controlpanel td {
+    width: 1em;
+    height: 1em;
+    border-top: 0px;
+    text-align: center;
+    vertical-align: center;
+}
+
+#emebutton {
+    display: block;
+    width: 10em;
+    height: 10em;
+    font-weight: bold;
+}

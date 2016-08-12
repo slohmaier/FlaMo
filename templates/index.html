@@ -76,6 +76,49 @@
 			
 			</div>
 			<div class="col-sm-7 bootcards-cads">
+				<!-- CARD: Control -->
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">Control</h3>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-xs-9">
+								<table class="table" id="controlpanel">
+									<tr>
+										<td></td>
+										<td><button id="move_y_up" class="btn btn-default"><i class="fa fa-chevron-up" aria-hidden="true"></i></button></td>
+										<td></td>
+										<td><button id="move_z_up" class="btn btn-default"><i class="fa fa-chevron-up" aria-hidden="true"></i></button></td>
+									</tr>
+									<tr>
+										<td><button id="move_x_down" class="btn btn-default"><i class="fa fa-chevron-left" aria-hidden="true"></i></button></td>
+										<td><button id="move_xy_home" class="btn btn-default"><i class="fa fa-home" aria-hidden="true"></i></button></td></td>
+										<td><button id="move_x_up" class="btn btn-default"><i class="fa fa-chevron-right" aria-hidden="true"></i></button></td>
+										<td><button id="move_z_home" class="btn btn-default"><i class="fa fa-home" aria-hidden="true"></i></button></td></td>
+									</tr>
+									<tr>
+										<td></td>
+										<td><button id="move_y_down" class="btn btn-default"><i class="fa fa-chevron-down" aria-hidden="true"></i></button></td>
+										<td></td>
+										<td><button id="move_z_down" class="btn btn-default"><i class="fa fa-chevron-down" aria-hidden="true"></i></button></td>
+									</tr>
+									<tr>
+										<td colspan="4">
+											<div class="form-group">
+												
+											</div>
+										</td>
+									</tr>
+								</table>
+							</div>
+							<div class="col-xs-3">
+								<button id="emebutton" class="btn btn-danger">EMERGENCY<br>STOP</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				
 				<!-- CARD: Temperatures -->
 				<div class="panel panel-default">
 					<div class="panel-heading">
@@ -161,6 +204,7 @@
     <script src="static/js/vendor/canvasjs.js"></script>
     
     <script src="static/js/flashforge.js"></script>
+    <script src="static/js/temp.js"></script>
     <script src="static/js/main.js"></script>
   </body>
 </html>
