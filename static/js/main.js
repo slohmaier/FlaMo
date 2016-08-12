@@ -66,11 +66,6 @@ $('#gcode_cmd_form').submit(function(e) {
 	e.preventDefault();
 });
 
-$('#ledcolor').spectrum({
-	showAlpha: true,
-	allowEmpty: true
-});
-
 //ask for basic information at the start
 socket.emit('gcodecmd', 'M115');
 socket.emit('gcodecmd', 'M119');
