@@ -137,9 +137,9 @@ def load_user_request(request):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 	if request.method == 'POST':
-		request.form['password'] == settings.get('password', 'flamo')
-		login_user(User())
-		return flask.redirect(request.form['next'], code=302)
+		if request.form['password'] == settings.get('password', 'flamo'):
+			login_user(User())
+			return flask.redirect(request.form['next'], code=302)
 	
 	return render_template('login.html')
 
