@@ -139,7 +139,7 @@ def login():
 	if request.method == 'POST':
 		if request.form['password'] == settings.get('password', 'flamo'):
 			login_user(User())
-			return flask.redirect(request.form['next'], code=302)
+			return flask.redirect('/', code=302)
 	
 	return render_template('login.html')
 
