@@ -65,6 +65,8 @@ settings = EasySettings('flamo.conf')
 Implementation
 '''
 class FlashForgeIO(Thread):
+	_instance = None
+	
 	def __init__(self, reconnect_timeout=5, vendorid=0x2b71, deviceid=0x0001):
 		Thread.__init__(self)
 		self.queue = Queue()
@@ -89,24 +91,23 @@ class FlashForgeIO(Thread):
 			except FlashForgeError as error:
 				socketio.emit('terminal', 'COMERROR: {0}'.format(error.message))
 
-ffio = FlashForgeIO()
-
 #default route index route
 @app.route('/', methods=['GET'])
 @login_required
 def index():
 	return render_template('index.html', streamurl=settings.get('streamurl'))
 
-'''00
+'''
 SocketIO callbacks
 '''
 
 @socketio.on('gcodecmd')
 def socketio_machine_state(cmd):
-	if not ffio.is_alive():
-		ffio.start()
+	if FlashForgeIO._instance is None or not FlashForgeIO._instance.is_alive():
+		FlashForgeIO._instance = FlashForgeIO()
+		FlashForgeIO._instance.start()
 	print('LALA {0}'.format(cmd))
-	ffio.queue.put(cmd)
+	FlashForgeIO._instance.queue.put(cmd)
 
 '''
 Authentication methods
@@ -139,7 +140,7 @@ def login():
 	if request.method == 'POST':
 		if request.form['password'] == settings.get('password', 'flamo'):
 			login_user(User())
-			return flask.redirect(request.form['next'], code=302)
+			return flask.redirect('/', code=302)
 	
 	return render_template('login.html')
 
